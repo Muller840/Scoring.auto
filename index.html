@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrador de Clientes</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Administrador de Clientes</h1>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="registrar-cliente-tab" data-toggle="tab" href="#registrar-cliente" role="tab" aria-controls="registrar-cliente" aria-selected="true">Registro de Clientes</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="calcular-prestamo-tab" data-toggle="tab" href="#calcular-prestamo" role="tab" aria-controls="calcular-prestamo" aria-selected="false">Calcular Préstamo</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="analizar-cliente-tab" data-toggle="tab" href="#analizar-cliente" role="tab" aria-controls="analizar-cliente" aria-selected="false">Analizar Cliente</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="lista-clientes-tab" data-toggle="tab" href="#lista-clientes" role="tab" aria-controls="lista-clientes" aria-selected="false">Lista de Clientes</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="registrar-cliente" role="tabpanel" aria-labelledby="registrar-cliente-tab">
+                <h2 class="mt-4">Registrar Cliente</h2>
+                <form id="clienteForm">
+                    <div class="form-group">
+                        <label for="ciCliente">Ci del Cliente:</label>
+                        <input type="text" class="form-control" id="ciCliente" name="ciCliente" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="apellido">Apellido:</label>
+                        <input type="text" class="form-control" id="apellido" name="apellido" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefono">Teléfono:</label>
+                        <input type="tel" class="form-control" id="telefono" name="telefono" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="salario">Salario (en Gs):</label>
+                        <input type="number" class="form-control" id="salario" name="salario" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="estadoCivil">Estado Civil:</label>
+                        <select class="form-control" id="estadoCivil" name="estadoCivil" required onchange="toggleConyugeFields()">
+                            <option value="soltero">Soltero</option>
+                            <option value="casado">Casado</option>
+                            <option value="divorciado">Divorciado</option>
+                        </select>
+                    </div>
+                    <div id="conyugeFields" style="display:none;">
+                        <div class="form-group">
+                            <label for="nombreConyuge">Nombre del Cónyuge:</label>
+                            <input type="text" class="form-control" id="nombreConyuge" name="nombreConyuge">
+                        </div>
+                        <div class="form-group">
+                            <label for="salarioConyuge">Salario del Cónyuge (en Gs):</label>
+                            <input type="number" class="form-control" id="salarioConyuge" name="salarioConyuge">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Registrar Cliente</button>
+                </form>
+            </div>
+            <div class="tab-pane fade" id="calcular-prestamo" role="tabpanel" aria-labelledby="calcular-prestamo-tab">
+                <h2 class="mt-4">Calcular Préstamo</h2>
+                <form id="prestamoForm">
+                    <div class="form-group">
+                        <label for="montoPrestamo">Monto del Préstamo (en Gs):</label>
+                        <input type="number" class="form-control" id="montoPrestamo" name="montoPrestamo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="plazoPrestamo">Plazo (meses):</label>
+                        <select class="form-control" id="plazoPrestamo" name="plazoPrestamo" required>
+                            <option value="12">12 meses</option>
+                            <option value="24">24 meses</option>
+                            <option value="36">36 meses</option>
+                            <option value="48">48 meses</option>
+                            <option value="60">60 meses</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="calcularPrestamo()">Calcular Cuota</button>
+                    <div id="resultadoPrestamo"></div>
+                </form>
+            </div>
+            <div class="tab-pane fade" id="analizar-cliente" role="tabpanel" aria-labelledby="analizar-cliente-tab">
+                <h2 class="mt-4">Analizar Cliente</h2>
+                <form id="analizarClienteForm">
+                    <div class="form-group">
+                        <label for="ciAnalizar">Ci del Cliente:</label>
+                        <input type="text" class="form-control" id="ciAnalizar" name="ciAnalizar" required>
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="analizarCliente()">Analizar</button>
+                    <div id="resultadoAnalisis"></div>
+                </form>
+            </div>
+            <div class="tab-pane fade" id="lista-clientes" role="tabpanel" aria-labelledby="lista-clientes-tab">
+                <h2 class="mt-4">Lista de Clientes</h2>
+                <div id="listaClientes"></div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
